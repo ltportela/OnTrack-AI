@@ -1,92 +1,112 @@
-# ontrack-ai
+# OnTrack AI: Student Retention & Risk Detection Framework
 
-Simple ReAct agent
-Agent generated with `agents-cli` version `1.0.0`
-
-## Project Structure
-
-```
-ontrack-ai/
-├── app/         # Core agent code
-│   ├── agent.py               # Main agent logic
-│   ├── fast_api_app.py        # FastAPI Backend server
-│   └── app_utils/             # App utilities and helpers
-├── tests/                     # Unit, integration, and load tests
-├── GEMINI.md                  # AI-assisted development guide
-└── pyproject.toml             # Project dependencies
-```
-
-> 💡 **Tip:** Use [Antigravity CLI](https://antigravity.google/) for AI-assisted development - project context is pre-configured in `GEMINI.md`.
-
-## Requirements
-
-Before you begin, ensure you have:
-- **uv**: Python package manager (used for all dependency management in this project) - [Install](https://docs.astral.sh/uv/getting-started/installation/) ([add packages](https://docs.astral.sh/uv/concepts/dependencies/) with `uv add <package>`)
-- **agents-cli**: Agents CLI - Install with `uv tool install google-agents-cli`
-- **Google Cloud SDK**: For GCP services - [Install](https://cloud.google.com/sdk/docs/install)
-
-
-## Quick Start
-
-Install `agents-cli` and its skills if not already installed:
-
-```bash
-uvx google-agents-cli setup
-```
-
-Install required packages:
-
-```bash
-agents-cli install
-```
-
-Test the agent with a local web server:
-
-```bash
-agents-cli playground
-```
-
-You can also use features from the [ADK](https://adk.dev/) CLI with `uv run adk`.
-
-## Commands
-
-| Command              | Description                                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------- |
-| `agents-cli install` | Install dependencies using uv                                                         |
-| `agents-cli playground` | Launch local development environment                                                  |
-| `agents-cli lint`    | Run code quality checks                                                               |
-| `agents-cli eval`    | Evaluate agent behavior (generate, grade, analyze, and more — see `agents-cli eval --help`) |
-| `uv run pytest tests/unit tests/integration` | Run unit and integration tests                                                        || [A2A Inspector](https://github.com/a2aproject/a2a-inspector) | Launch A2A Protocol Inspector                                                        |
-
-## 🛠️ Project Management
-
-| Command | What It Does |
-|---------|--------------|
-| `agents-cli scaffold enhance` | Add CI/CD pipelines and Terraform infrastructure |
-| `agents-cli infra cicd` | One-command setup of entire CI/CD pipeline + infrastructure |
-| `agents-cli scaffold upgrade` | Auto-upgrade to latest version while preserving customizations |
+OnTrack AI is an agentic framework designed for the **Universidad Tecnológica del Sur de Sonora** to proactively detect early, latent signs of student risk and academic simulation (such as sudden drop-offs in LMS activity or plagiarized assignments) and apply the IDSRAL protocol.
 
 ---
 
-## Development
+## 🏗️ Project Architecture & Structure
 
-Edit your agent logic in `app/agent.py` and test with `agents-cli playground` - it auto-reloads on save.
-
-## Deployment
-
-```bash
-gcloud config set project <your-project-id>
-agents-cli deploy
+```
+ontrack-ai/
+├── .agents/                 # Installed local development skills
+├── app/                     # Core ADK Agent implementation
+│   ├── agent.py             # Main ADK agent definitions & callbacks
+│   ├── fast_api_app.py      # FastAPI gateway for ADK integration
+│   └── app_utils/           # Core telemetry & session helpers
+├── skills/                  # Custom agent skills
+│   └── idsral-psychometrics/# Protocol definitions for MSLQ & Schaufeli index
+├── src/                     # Multi-Agent Orchestration & Web Dashboards
+│   ├── app_tutor.py         # Faculty/Tutor UI Dashboard (FastAPI app)
+│   ├── main.py              # Local CLI execution flow pipeline
+│   ├── agents/              # Pipeline sub-agents
+│   │   ├── orchestrator.py  # Central risk evaluator & injection block
+│   │   ├── telemetry_fleet.py # Telemetry collection coordinator
+│   │   └── intervention_desk.py # Tutor action plan text generator
+│   └── tools/               # Security & API integrations
+│       ├── mcp_client.py    # Moodle/LMS telemetry mockup fetcher
+│       └── privacy_gate.py  # SHA256 PII sanitization gate
+├── tests/                   # Empirical Evaluation & Test Suite
+│   ├── mock_cohort_profiles.json # Seeding data for simulations
+│   ├── test_injection_guard.py  # Tests verifying prompt injection security
+│   └── integration/         # Multiagent and server E2E test flows
+├── Dockerfile               # Multipurpose container blueprint
+├── GEMINI.md                # AI-assisted development instructions
+└── pyproject.toml           # Project dependencies managed via uv
 ```
 
-To add CI/CD and Terraform, run `agents-cli scaffold enhance`.
-To set up your production infrastructure, run `agents-cli infra cicd`.
+---
 
-## Observability
+## 🛡️ Key Features & Security Controls
 
-Built-in telemetry exports to Cloud Trace, BigQuery, and Cloud Logging.
+### 1. Zero-Trust PII Sanitization
+Incoming student identifiers (emails, names, IDs) are programmatically hashed into cryptographic tokens (`student_sha256_xxx`) via the [privacy_gate.py](file:///C:/Users/tportela/ontrack-ai/src/tools/privacy_gate.py) before reaching any Large Language Model.
 
-## A2A Inspector
+### 2. Prompt Injection Defense
+Adversarial instructions inside text feeds or raw logs (e.g. attempting to override risk assessments to `LOW`) are blocked using context hygiene inside [orchestrator.py](file:///C:/Users/tportela/ontrack-ai/src/agents/orchestrator.py). The system isolates execution parameters and strictly enforces structured logic.
 
-This agent supports the [A2A Protocol](https://a2a-protocol.org/). Use the [A2A Inspector](https://github.com/a2aproject/a2a-inspector) to test interoperability.
-See the [A2A Inspector docs](https://github.com/a2aproject/a2a-inspector) for details.
+### 3. Stateful Crisis Circuit Breaker
+If text logs indicate severe emotional distress, self-harm, or domestic violence, a dedicated circuit breaker inside [app_tutor.py](file:///C:/Users/tportela/ontrack-ai/src/app_tutor.py) and [agent.py](file:///C:/Users/tportela/ontrack-ai/app/agent.py) triggers:
+- Normal diagnostic flows are halted immediately.
+- The case is bypassed and routed to the **"Unidad de Apoyo al Estudiante"** for emergency human intervention.
+- The Faculty/Tutor UI transitions into a striking red-alert alarm layout.
+
+---
+
+## 🚀 Running locally
+
+### Prerequisites
+Ensure you have `uv` and `google-agents-cli` installed:
+```bash
+# Install uv tool
+uv tool install google-agents-cli
+```
+
+### Install Dependencies
+```bash
+# Sync virtual environment and dependencies
+agents-cli install
+```
+
+### 1. Run the Agent Playground
+Starts the ADK interactive console to chat with the early detection agent:
+```bash
+agents-cli playground
+# Available at http://127.0.0.1:8080/dev-ui/?app=app
+```
+
+### 2. Run the Faculty / Tutor UI Dashboard
+Starts the interactive simulation dashboard featuring HSL dark-mode styling, mock profile loading, and crisis red-alert triggers:
+```bash
+uv run python src/app_tutor.py
+# Available at http://127.0.0.1:8050/
+```
+
+### 3. Run Pre-Deployment Tests
+```bash
+uv run pytest tests/unit tests/integration
+```
+
+---
+
+## ☁️ Deploying to Google Cloud Run
+
+Ensure you have configured `gcloud` with the correct project:
+```bash
+gcloud config set project ontrack-ai-501705
+```
+
+### Deploying the ADK Backend Agent
+```bash
+agents-cli deploy --deployment-target cloud_run --no-confirm-project --project ontrack-ai-501705
+```
+
+### Deploying the Faculty/Tutor Dashboard UI
+```bash
+gcloud run deploy ontrack-tutor-ui \
+  --project ontrack-ai-501705 \
+  --region us-east1 \
+  --source . \
+  --command="uv,run,python,src/app_tutor.py" \
+  --port=8050 \
+  --allow-unauthenticated
+```
