@@ -87,26 +87,3 @@ uv run pytest tests/unit tests/integration
 ```
 
 ---
-
-## ☁️ Deploying to Google Cloud Run
-
-Ensure you have configured `gcloud` with the correct project:
-```bash
-gcloud config set project ontrack-ai-501705
-```
-
-### Deploying the ADK Backend Agent
-```bash
-agents-cli deploy --deployment-target cloud_run --no-confirm-project --project ontrack-ai-501705
-```
-
-### Deploying the Faculty/Tutor Dashboard UI
-```bash
-gcloud run deploy ontrack-tutor-ui \
-  --project ontrack-ai-501705 \
-  --region us-east1 \
-  --source . \
-  --command="uv,run,python,src/app_tutor.py" \
-  --port=8050 \
-  --allow-unauthenticated
-```
