@@ -1,0 +1,8 @@
+{
+  "protocol": "IDSRAL-2026",
+  "metrics": {
+    "mslq_motivation_floor": 0.40,
+    "schaufeli_burnout_ceiling": 0.70,
+    "critical_lms_dormancy_days": 5
+  }
+}

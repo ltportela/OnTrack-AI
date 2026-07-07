@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "idsral-psychometrics": {
+      "source": "C:\\Users\\tportela\\ontrack-ai\\skills\\idsral-psychometrics",
+      "sourceType": "local",
+      "computedHash": "dc5c8bc14b6ff7b32b5256c2255f1a7969ad61615ee9936162b8590e916fb284"
+    }
+  }
+}

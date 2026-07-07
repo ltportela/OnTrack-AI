@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ontrack-lms-telemetry": {
+      "command": "python",
+      "args": ["-m", "src.tools.mcp_client"],
+      "env": {
+        "MOODLE_API_VERSION": "5.2",
+        "CLASSROOM_ENV": "production"
+      }
+    }
+  }
+}
