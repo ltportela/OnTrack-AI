@@ -1,6 +1,6 @@
 # OnTrack AI: Student Retention & Risk Detection Framework
 
-OnTrack AI is an agentic framework designed for the **Universidad Tecnológica del Sur de Sonora** to proactively detect early, latent signs of student risk and academic simulation (such as sudden drop-offs in LMS activity or plagiarized assignments) and apply the IDSRAL protocol.
+OnTrack AI is an agentic framework designed for a small University to proactively detect early, latent signs of student risk and academic simulation (such as sudden drop-offs in LMS activity or plagiarized assignments) and apply the IDSRAL protocol.
 
 ---
 
